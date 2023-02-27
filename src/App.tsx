@@ -1,9 +1,8 @@
+import VideoPlayer from "./VideoPlayer";
 
 function App() {
   return (
-    <div className="App">
-      React Video Player
-    </div>
+    <VideoPlayer />
   );
 }
 

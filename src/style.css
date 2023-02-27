@@ -1,0 +1,135 @@
+:root {
+    --primary-color: #3498DB;
+    --secondary--color: #16A085;
+    --progress-position : 0.4;
+    --preview-position : 1;
+    --scale : 1;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.video-container {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: center;
+    margin-inline: auto;
+    background-color: black;
+}
+
+.video-player {
+    width: 100%;
+    height: 100%;
+}
+
+.controllers {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+    font-size: 1.5rem;
+    padding-inline: 8px;
+}
+
+.controllers > * {
+    cursor: pointer;
+}
+
+.controllers svg {
+    width: 30px;
+    min-width: 30px;
+}
+
+.controllers::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, .75), transparent);
+    width: 100%;
+    aspect-ratio: 6 / 1;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.video-container:hover .controllers,
+.video-container:focus-within .controllers,
+.video-container.paused .controllers {
+    opacity: 1;
+}
+
+.video-controls-container .controls {
+    display: flex;
+    gap: .5rem;
+    padding: .25rem;
+    align-items: center;
+}
+
+.progress-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.bar-container {
+    background-color: rgba(100, 100, 100, .5);
+    height: 4px;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+    position: relative
+}
+
+.bar-container::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: calc(100% - var(--preview-position) * 100%);
+    background-color: rgb(150, 150, 150);
+    border-radius: 8px;
+    display: none;
+}
+
+.bar-container::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: calc(100% - var(--progress-position) * 100%);
+    background-color: var(--primary-color);
+    border-radius: 8px;
+}
+
+.thumb {
+    position: absolute;
+    transform: translateX(-50%) scale(var(--scale));
+    height: 200%;
+    top: -50%;
+    left: calc(var(--progress-position) * 100%);
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    transition: transform 150ms ease-in-out;
+    aspect-ratio: 1 / 1;
+}
+
+.bottom-right-controllers {
+    display: flex;
+    align-items: center;
+}
