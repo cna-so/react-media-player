@@ -10,6 +10,7 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family: 'Roboto' , sans-serif;
 }
 
 .video-container {
@@ -39,14 +40,22 @@
     z-index: 100;
     opacity: 0;
     transition: opacity 150ms ease-in-out;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     padding-inline: 8px;
 }
 
 .controllers > * {
     cursor: pointer;
+    height: 30px;
+    display: flex;
+    align-items: center;
 }
-
+.controllers > div > .icon-container {
+    cursor: pointer;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
 .controllers svg {
     width: 30px;
     min-width: 30px;
@@ -71,9 +80,9 @@
 
 .video-controls-container .controls {
     display: flex;
+    align-items: center;
     gap: .5rem;
     padding: .25rem;
-    align-items: center;
 }
 
 .progress-bar-container {
@@ -132,4 +141,31 @@
 .bottom-right-controllers {
     display: flex;
     align-items: center;
+}
+.header-controllers {
+    display: flex;
+    align-items: center;
+  justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+    font-size: 1.4rem;
+    padding-inline: 8px;
+}
+.video-container:hover .header-controllers {
+  opacity: 1;
+}
+.subtitle-controllers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.subtitle-controllers > * {
+  cursor: pointer;
 }
