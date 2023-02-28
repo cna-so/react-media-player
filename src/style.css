@@ -1,17 +1,18 @@
 :root {
     --primary-color: #3498DB;
     --secondary--color: #16A085;
-    --progress-position : 0.4;
-    --preview-position : 1;
+    --progress-position : 0;
+    /* --preview-position : 1; */
     --scale : 1;
 }
 
-* {
+* , ::after , ::before  {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
     font-family: 'Roboto' , sans-serif;
 }
+
 
 .video-container {
     position: relative;
@@ -21,6 +22,7 @@
     justify-content: center;
     margin-inline: auto;
     background-color: black;
+    cursor: pointer;
 }
 
 .video-player {
@@ -164,8 +166,21 @@
     opacity: 0;
     transition: opacity 150ms ease-in-out;
     font-size: 1.4rem;
-    padding-inline: 8px;
+    /* margin: 8px; */
 }
+
+.header-controllers::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .75), transparent);
+    width: 100%;
+    aspect-ratio: 12 / 1;
+    z-index: -1;
+    pointer-events: none;
+
+}
+
 .video-container:hover .header-controllers {
   opacity: 1;
 }
@@ -173,7 +188,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  padding-right: 8px;
 }
 .subtitle-controllers > * {
   cursor: pointer;
 }
+.middle-play {
+  position: absolute;
+  top: calc(50% - 40px);
+  left: calc(50% - 40px);
+  z-index: 1000;
+  color: white;
+  font-size: 72px;
+  width: 70px;
+  height: 70px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 150ms ease-in;
+}
+.video-container:hover .middle-play {
+opacity: 1;
+}  

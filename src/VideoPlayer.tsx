@@ -1,5 +1,5 @@
 import "./style.css";
-import { useEffect, useRef, useState } from "react";
+import { ReactEventHandler, useEffect, useRef, useState } from "react";
 import { BsPlay, BsPause } from "react-icons/bs";
 import { TfiControlBackward, TfiControlForward } from "react-icons/tfi";
 import { CiVolumeHigh, CiVolumeMute } from "react-icons/ci";
@@ -27,7 +27,7 @@ const VideoPlayer = () => {
     videoRef.current.currentTime >= 5 && (videoRef.current.currentTime -= 5)
   }
   const toggleMute = () => {
-    if (volume == "high") {
+    if (volume === "high") {
       videoRef.current.volume = 0;
       videoRef.current.muted = true;
       setVolume("muted")
@@ -41,7 +41,7 @@ const VideoPlayer = () => {
   const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
     minimumIntegerDigits: 2,
   })
-  function formatDuration(time) {
+  function formatDuration(time: any) {
     const seconds = Math.floor(time % 60)
     const minutes = Math.floor(time / 60) % 60
     const hours = Math.floor(time / 3600)
@@ -60,6 +60,26 @@ const VideoPlayer = () => {
   const CalcCurrentTime = () => {
     setCurrentTime(formatDuration(videoRef.current.currentTime))
   }
+  const timelineContainer = useRef<HTMLDivElement>()
+
+  function handleTimelineUpdate(e: any) {
+    const rect = timelineContainer.current.getBoundingClientRect()
+    const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width
+    // const previewImgNumber = Math.max(
+    //   1,
+    //   Math.floor((percent * videoRef.current.duration) / 10)
+    // )
+    // const previewImgSrc = `assets/previewImgs/preview${previewImgNumber}.jpg`
+    // previewImg.src = previewImgSrc
+    const pe = videoRef.current.currentTime / videoRef.current.duration
+    timelineContainer.current.style.setProperty("--progress-position", (pe).toString())
+    // if (isScrubbing) {
+    // e.preventDefault()
+    // thumbnailImg.src = previewImgSrc
+    // timelineContainer.style.setProperty("--progress-position", percent)
+    // }
+  }
+
 
 
   useEffect(() => {
@@ -67,8 +87,10 @@ const VideoPlayer = () => {
   }, [videoRef])
 
   return (
-    <div className={`video-container ${size}`}>
-      <div className="header-controllers">
+    <div className={`video-container ${size}`}   >
+      {!isPlay ? <BsPause className="middle-play" onClick={togglePlay} />
+        : <BsPlay size={35} className="middle-play" onClick={togglePlay} />
+      } <div className="header-controllers">
         <div />
         <h1>
           Title
@@ -93,7 +115,7 @@ const VideoPlayer = () => {
             <TfiControlBackward onClick={backward} />
           </div>
         </div>
-        <div className={"progress-bar-container"}>
+        <div className={"progress-bar-container timeline-container"} ref={timelineContainer} >
           <p>{currentTime}</p>
           <div className={"bar-container"}>
             <div className={"thumb"} />
@@ -115,7 +137,14 @@ const VideoPlayer = () => {
           </div>
         </div>
       </div>
-      <video className="video-player" ref={videoRef} onLoadedData={CalcTotalTime} onTimeUpdate={CalcCurrentTime} >
+      <video className="video-player" ref={videoRef} onLoadedData={() => {
+        CalcCurrentTime()
+        CalcTotalTime()
+      }}
+        onTimeUpdate={(event) => {
+
+          handleTimelineUpdate(event)
+        }} >
         <source src={"/video/file1.mp4"} type="video/mp4" />
       </video>
     </div>
